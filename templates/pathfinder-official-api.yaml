@@ -14,3 +14,7 @@ spec:
     path: .
     repoURL: https://github.com/SilvesterPathfinder/pathfinder-official-api-gitops.git
     targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values/common.yaml
+        - values/production.yaml
