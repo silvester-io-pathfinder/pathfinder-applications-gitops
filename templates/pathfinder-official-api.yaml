@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pathfinder-official-api
+  namespace: pathfinder
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: pathfinder
+    server: {{ .Values.spec.destination.server }}
+  project: pathfinder
+  source:
+    path: .
+    repoURL: https://github.com/SilvesterPathfinder/pathfinder-official-api-gitops.git
+    targetRevision: HEAD

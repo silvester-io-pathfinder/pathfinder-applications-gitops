@@ -1,0 +1,6 @@
+apiVersion: v2
+name: applications
+description: Applies the configured applications to Kubernetes for ArgoCd to pick up on.
+type: application
+version: 0.0.1
+appVersion: "1.16.0"
