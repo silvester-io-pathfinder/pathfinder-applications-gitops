@@ -1,3 +1,3 @@
 spec:
   destination:
-    server: https://kubernetes.pathfinder.svc
+    server: https://kubernetes.default.svc
