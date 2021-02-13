@@ -18,3 +18,9 @@ spec:
       valueFiles:
         - values/common.yaml
         - values/production.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true      
