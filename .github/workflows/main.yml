@@ -1,0 +1,44 @@
+name: App of apps
+
+on:
+  push:
+    branches:        
+      - "master"
+
+jobs:
+  terraform:
+    name: Linux build on node ${{ matrix.node_version }}
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: "INSTALL - CLI - GCloud"
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        project_id: silvester-306016
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+     
+    - name: "INSTALL - CLI - ArgoCD"
+      run: |
+        ARGOCD_VERSION=$(curl --silent "https://api.github.com/repos/argoproj/argo-cd/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+        curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/$ARGOCD_VERSION/argocd-linux-amd64
+        chmod +x /usr/local/bin/argocd
+
+
+
+    # ARGOCD
+    - name: "ARGOCD - Login"
+      run: argocd login --username ${{ secrets.ARGOCD_USERNAME }} --password ${{ secrets.ARGOCD_PASSWORD }}
+
+    - name: "ARGOCD - Create Project"
+      run: argocd proj create pathfinder -d *,pathfinder -s *
+
+    - name: "ARGOCD - Create App of Apps"
+      run: argocd app create silvester-io-pathfinder --dest-namespace pathfinder --dest-server https://kubernetes.default.svc --dest-namespace pathfinder --repo https://github.com/SilvesterPathfinder/pathfinder-cluster-applications --path . --auto-prune --self-heal --sync-policy automated --sync-option Prune=true
