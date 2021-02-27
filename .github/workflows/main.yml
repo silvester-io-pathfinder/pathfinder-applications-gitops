@@ -34,6 +34,16 @@ jobs:
 
 
 
+    # ARTIFACTORY    
+    - name: "ARTIFACTORY - Delete Existing Artifactory Secret"
+      run: kubectl delete secret artifactory-credentials
+      continue-on-error: true
+
+    - name: "ARTIFACTORY - Create Artifactory Secret"
+      run: kubectl create secret docker-registry artifactory-credentials --docker-server=silvester.jfrog.io --docker-username=${{secrets.ARTIFACTORY_USERNAME}} --docker-password=${{secrets.ARTIFACTORY_PASSWORD}} --docker-email=${{secrets.ARTIFACTORY_USERNAME}} --namespace pathfinder
+
+
+
     # HELM
     - name: "HELM - Install Chart"
       run: helm upgrade --install applications .
