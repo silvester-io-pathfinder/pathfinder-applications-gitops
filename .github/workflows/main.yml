@@ -32,20 +32,14 @@ jobs:
         location: europe-west1-b
         credentials: ${{ secrets.GCP_SA_KEY }}
 
-
-
-    # ARTIFACTORY    
-    - name: "ARTIFACTORY - Delete Existing Artifactory Secret"
-      run: kubectl delete secret artifactory-credentials
-      continue-on-error: true
-
-    - name: "ARTIFACTORY - Create Artifactory Secret"
-      run: kubectl create secret docker-registry artifactory-credentials --docker-server=silvester.jfrog.io --docker-username=${{secrets.ARTIFACTORY_USERNAME}} --docker-password=${{secrets.ARTIFACTORY_PASSWORD}} --docker-email=${{secrets.ARTIFACTORY_USERNAME}} --namespace pathfinder
-
-
-
     # HELM
-    - name: "HELM - Install Chart"
+    - name: "HELM - Install Sealed Secrets" 
+      run: |
+        helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+        helm repo update
+        helm upgrade --install --namespace kube-system sealed-secrets sealed-secrets/sealed-secrets
+
+    - name: "HELM - Install Project"
       run: helm upgrade --install applications .
 
     #- name: "INSTALL - CLI - ArgoCD"
