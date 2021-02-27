@@ -27,17 +27,17 @@ jobs:
      
     - name: "INSTALL - CLI - ArgoCD"
       run: |
-        curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/v1.8.6/argocd-linux-amd64
-        chmod +x /usr/local/bin/argocd
+        curl -sSL -o ~/argocd https://github.com/argoproj/argo-cd/releases/download/v1.8.6/argocd-linux-amd64
+        chmod +x ~/argocd
 
 
 
     # ARGOCD
     - name: "ARGOCD - Login"
-      run: argocd login --username ${{ secrets.ARGOCD_USERNAME }} --password ${{ secrets.ARGOCD_PASSWORD }}
+      run: ~/argocd login --username ${{ secrets.ARGOCD_USERNAME }} --password ${{ secrets.ARGOCD_PASSWORD }}
 
     - name: "ARGOCD - Create Project"
-      run: argocd proj create pathfinder -d *,pathfinder -s *
+      run: ~/argocd proj create pathfinder -d *,pathfinder -s *
 
     - name: "ARGOCD - Create App of Apps"
-      run: argocd app create silvester-io-pathfinder --dest-namespace pathfinder --dest-server https://kubernetes.default.svc --dest-namespace pathfinder --repo https://github.com/SilvesterPathfinder/pathfinder-cluster-applications --path . --auto-prune --self-heal --sync-policy automated --sync-option Prune=true
+      run: ~/argocd app create silvester-io-pathfinder --dest-namespace pathfinder --dest-server https://kubernetes.default.svc --dest-namespace pathfinder --repo https://github.com/SilvesterPathfinder/pathfinder-cluster-applications --path . --auto-prune --self-heal --sync-policy automated --sync-option Prune=true
