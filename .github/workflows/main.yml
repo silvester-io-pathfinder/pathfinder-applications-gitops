@@ -37,7 +37,7 @@ jobs:
       run: ~/argocd login argocd.pf2e.io --username ${{ secrets.ARGOCD_USERNAME }} --password ${{ secrets.ARGOCD_PASSWORD }}
 
     - name: "ARGOCD - Create Project"
-      run: ~/argocd proj create pathfinder -d *,pathfinder -s *
+      run: ~/argocd proj create pathfinder --upsert -d *,pathfinder -s *
 
     - name: "ARGOCD - Create App of Apps"
       run: ~/argocd app create silvester-io-pathfinder --dest-namespace pathfinder --dest-server https://kubernetes.default.svc --dest-namespace pathfinder --repo https://github.com/SilvesterPathfinder/pathfinder-cluster-applications --path . --auto-prune --self-heal --sync-policy automated --sync-option Prune=true
