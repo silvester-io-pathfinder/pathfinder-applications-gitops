@@ -34,7 +34,7 @@ jobs:
 
     # ARGOCD
     - name: "ARGOCD - Login"
-      run: ~/argocd login --username ${{ secrets.ARGOCD_USERNAME }} --password ${{ secrets.ARGOCD_PASSWORD }}
+      run: ~/argocd login argocd.pf2e.io --username ${{ secrets.ARGOCD_USERNAME }} --password ${{ secrets.ARGOCD_PASSWORD }}
 
     - name: "ARGOCD - Create Project"
       run: ~/argocd proj create pathfinder -d *,pathfinder -s *
