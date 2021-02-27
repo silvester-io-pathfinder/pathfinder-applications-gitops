@@ -11,6 +11,7 @@ spec:
     server: {{ .Values.spec.destination.server }}
   project: pathfinder
   source:
+    chart: chart
     repoURL: https://github.com/silvester-io-pathfinder/pathfinder-official-api-gitops.git
     targetRevision: HEAD
     helm:
