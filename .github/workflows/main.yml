@@ -25,19 +25,23 @@ jobs:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
      
-    - name: "INSTALL - CLI - ArgoCD"
-      run: |
-        curl -sSL -o ~/argocd https://github.com/argoproj/argo-cd/releases/download/v1.8.6/argocd-linux-amd64
-        chmod +x ~/argocd
+    - name: "INSTALL - CLI - Helm"
+      uses: azure/setup-helm@v1
 
+    - name: "HELM - Install Chart"
+      run: helm upgrade --install applications .
 
+    #- name: "INSTALL - CLI - ArgoCD"
+    #  run: |
+    #    curl -sSL -o ~/argocd https://github.com/argoproj/argo-cd/releases/download/v1.8.6/argocd-linux-amd64
+    #    chmod +x ~/argocd
 
     # ARGOCD
-    - name: "ARGOCD - Login"
-      run: ~/argocd login argocd.pf2e.io --username ${{ secrets.ARGOCD_USERNAME }} --password ${{ secrets.ARGOCD_PASSWORD }}
+    #- name: "ARGOCD - Login"
+    #  run: ~/argocd login argocd.pf2e.io --username ${{ secrets.ARGOCD_USERNAME }} --password ${{ secrets.ARGOCD_PASSWORD }}
 
-    - name: "ARGOCD - Create Project"
-      run: ~/argocd proj create pathfinder --upsert -d *,pathfinder -s *
+    #- name: "ARGOCD - Create Project"
+    #  run: ~/argocd proj create pathfinder --upsert -d *,pathfinder -s *
 
-    - name: "ARGOCD - Create App of Apps"
-      run: ~/argocd app create silvester-io-pathfinder --dest-namespace pathfinder --dest-server https://kubernetes.default.svc --dest-namespace pathfinder --repo https://github.com/silvester-io-pathfinder/pathfinder-cluster-applications --chart chart --auto-prune --self-heal --sync-policy automated --sync-option Prune=true
+    #- name: "ARGOCD - Create App of Apps"
+    #  run: ~/argocd app create silvester-io-pathfinder --dest-namespace pathfinder --dest-server https://kubernetes.default.svc --dest-namespace pathfinder --repo https://github.com/silvester-io-pathfinder/pathfinder-cluster-applications --chart chart --auto-prune --self-heal --sync-policy automated --sync-option Prune=true
