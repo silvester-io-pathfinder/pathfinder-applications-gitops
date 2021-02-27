@@ -18,6 +18,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
 
+
+    # CLI
     - name: "INSTALL - CLI - GCloud"
       uses: google-github-actions/setup-gcloud@master
       with:
@@ -28,6 +30,18 @@ jobs:
     - name: "INSTALL - CLI - Helm"
       uses: azure/setup-helm@v1
 
+
+    # KUBERNETES
+    - name: "KUBERNETES - Set Credentials"
+      uses: google-github-actions/get-gke-credentials@main 
+      with:
+        cluster_name: silvester-cluster
+        location: europe-west1-b
+        credentials: ${{ secrets.GCP_SA_KEY }}
+
+
+
+    # HELM
     - name: "HELM - Install Chart"
       run: helm upgrade --install applications .
 
