@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pathfinder-official-web
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: pathfinder
+    server: {{ .Values.spec.destination.server }}
+  project: pathfinder
+  source:
+    path: ./chart
+    repoURL: https://github.com/silvester-io-pathfinder/pathfinder-official-web-gitops.git
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values/common.yaml
+        - values/production.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true      
