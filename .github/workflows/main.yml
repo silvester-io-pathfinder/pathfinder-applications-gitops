@@ -40,19 +40,4 @@ jobs:
         helm upgrade --install --namespace kube-system sealed-secrets sealed-secrets/sealed-secrets
 
     - name: "HELM - Install Project"
-      run: helm upgrade --install applications .
-
-    #- name: "INSTALL - CLI - ArgoCD"
-    #  run: |
-    #    curl -sSL -o ~/argocd https://github.com/argoproj/argo-cd/releases/download/v1.8.6/argocd-linux-amd64
-    #    chmod +x ~/argocd
-
-    # ARGOCD
-    #- name: "ARGOCD - Login"
-    #  run: ~/argocd login argocd.pf2e.io --username ${{ secrets.ARGOCD_USERNAME }} --password ${{ secrets.ARGOCD_PASSWORD }}
-
-    #- name: "ARGOCD - Create Project"
-    #  run: ~/argocd proj create pathfinder --upsert -d *,pathfinder -s *
-
-    #- name: "ARGOCD - Create App of Apps"
-    #  run: ~/argocd app create silvester-io-pathfinder --dest-namespace pathfinder --dest-server https://kubernetes.default.svc --dest-namespace pathfinder --repo https://github.com/silvester-io-pathfinder/pathfinder-cluster-applications --chart chart --auto-prune --self-heal --sync-policy automated --sync-option Prune=true
+      run: helm upgrade --install pathfinder-applications .
