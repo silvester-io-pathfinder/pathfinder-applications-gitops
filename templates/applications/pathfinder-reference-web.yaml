@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: pathfinder-official-web
+  name: pathfinder-reference-web
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -12,7 +12,7 @@ spec:
   project: pathfinder
   source:
     path: ./chart
-    repoURL: https://github.com/silvester-io-pathfinder/pathfinder-official-web-gitops.git
+    repoURL: https://github.com/silvester-io-pathfinder/pathfinder-reference-web-gitops.git
     targetRevision: HEAD
     helm:
       valueFiles:
