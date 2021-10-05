@@ -11,5 +11,5 @@ kubectl get secret sealed-secrets-keylv8cz -n kube-system --template "{{.data}}"
 
 Base64 decode the `tls.crt` property and insert it into kubeseal:
 ```
-kubeseal --cert=... <unsealed.yaml >sealed.yaml -o yaml 
+kubeseal --cert=tls.txt <unsealed.yaml >sealed.yaml -o yaml 
 ```
