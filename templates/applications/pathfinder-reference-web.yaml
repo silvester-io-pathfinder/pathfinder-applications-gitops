@@ -1,26 +1,29 @@
+{{ range $cluster := $.Values.clusters }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: pathfinder-reference-web
+  name: pathfinder-reference-web-{{ $cluster }}
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: pathfinder
-    server: {{ .Values.spec.destination.server }}
+    server: {{ $.Values.spec.destination.server }}
   project: pathfinder
   source:
     path: ./chart
     repoURL: https://github.com/silvester-io-pathfinder/pathfinder-reference-web-gitops.git
-    targetRevision: HEAD
+    targetRevision: {{ $cluster }}
     helm:
       valueFiles:
         - values/common.yaml
-        - values/production.yaml
+        - values/{{ $cluster }}.yaml
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true      
+---
+{{ end }}
