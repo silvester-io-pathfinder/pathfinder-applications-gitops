@@ -3,5 +3,4 @@ spec:
     server: https://kubernetes.default.svc
 
 clusters:
-- staging
 - production
